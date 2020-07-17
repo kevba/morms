@@ -119,3 +119,27 @@ export const ipAddress = (): validator => {
         return {valid: true, text: ""};
     };
 };
+
+export const minLength = (min: number): validator => {
+    let text = `Must at least be ${min} characters long`;
+
+    return (value: any) => {
+        if (value.toString().length < min) {
+            return {valid: false, text: text};
+        } 
+
+        return {valid: true, text: ""};
+    }
+}
+
+export const maxLength = (max: number): validator => {
+    let text = `Must at most be ${max} characters long`;
+
+    return (value: any) => {
+        if (value.toString().length > max) {
+            return {valid: false, text: text};
+        } 
+
+        return {valid: true, text: ""};
+    }
+}

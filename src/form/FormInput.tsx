@@ -70,6 +70,7 @@ export function FormInput(props: IFormInputProps) {
         validateValue(value)
     }, [])
 
+    console.log(validations[props.label]?.showError)
     return (
         <TextField
             {...inputProps}
