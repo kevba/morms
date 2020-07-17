@@ -90,7 +90,6 @@ export function Form(props: IFormProps) {
     }
 
     const handleOnBlurValidation = (fieldname: string) => {
-        console.log(fieldname)
         // Always show the error when the user is done typing, unless there are no errors.
         if (validations[fieldname] !== undefined) {
             if (!validations[fieldname].isValid) {
@@ -102,7 +101,6 @@ export function Form(props: IFormProps) {
     }
 
     const handleOnSubmit= () => {
-        console.log("haha test");
         dispatch(enableShowError())
 
         if (onSubmit !== undefined && isValid) {
