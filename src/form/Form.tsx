@@ -67,7 +67,6 @@ export const SubmitContext = React.createContext<{isValid: boolean, onClick: () 
 
 export function Form(props: IFormProps) {
     const {onSubmit, children} = props
-
     const [validations, dispatch] = useReducer(validationReducer, defaultValidation)
 
     const isValid = useMemo((): boolean => {
@@ -79,10 +78,10 @@ export function Form(props: IFormProps) {
         return true
     }, [validations])
 
-    const onValidate = (fieldname: string, valid: boolean) => {        
+    const onValidate = (fieldname: string, valid: boolean) => {
         // Never show the error while the user is typing, unless the error is already visible. 
         let showError = false
-        if (validations[fieldname] !== undefined && validations[fieldname].showError && !valid) {
+        if (validations[fieldname] !== undefined && validations[fieldname].showError && !validations[fieldname].isValid) {
             showError = true
         }
 
