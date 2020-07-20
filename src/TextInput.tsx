@@ -10,6 +10,6 @@ type ITextInputProps = IFormInputProps;
  * @param {ITextInputProps} props
  * @returns {React.ReactElement}
  */
-export function TextInput(props: ITextInputProps) {
+export function TextInput(props: ITextInputProps): React.ReactElement {
     return <FormInput {...props} />;
-};
+}

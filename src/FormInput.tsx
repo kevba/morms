@@ -4,7 +4,7 @@ import TextField, {StandardTextFieldProps} from "@material-ui/core/TextField";
 
 import {validate, validator} from "./validators";
 
-import {ValidationDispatch, ValidateOnBlurDispatch} from "./Form"
+import {ValidationDispatch, ValidateOnBlurDispatch} from "./Form";
 
 export interface IFormInputProps extends StandardTextFieldProps {
     label: string;
@@ -25,7 +25,7 @@ export interface IFormInputProps extends StandardTextFieldProps {
  * @param {IFormInputProps} props
  * @returns {React.ReactElement}
  */
-export function FormInput(props: IFormInputProps) {
+export function FormInput(props: IFormInputProps): React.ReactElement {
     const {validators, value, label, ...inputProps} = props;
     const [helperText, setHelperText] = useState<string>("");
 
@@ -33,7 +33,7 @@ export function FormInput(props: IFormInputProps) {
     const onBlur = useContext(ValidateOnBlurDispatch);
 
     const validateValue = (value: string) => {
-        let result = validate(value, validators || []);
+        const result = validate(value, validators || []);
 
         setHelperText(result.text);
 
@@ -46,11 +46,11 @@ export function FormInput(props: IFormInputProps) {
         if (validations[props.label] === undefined) {
             return false;
         }
-        
+
         return validations[props.label].showError && helperText !== "";
     };
 
-    const handleOnChange = (event: any) => {
+    const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (props.onChange !== undefined) {
             props.onChange(event);
         }
@@ -58,17 +58,17 @@ export function FormInput(props: IFormInputProps) {
         validateValue(event.target.value);
     };
 
-    const handleOnBlur = (event: any) => {
+    const handleOnBlur = (event: React.FocusEvent<HTMLInputElement>) => {
         if (props.onBlur !== undefined) {
             props.onBlur(event);
         }
 
-        onBlur(props.label)
-    }
+        onBlur(props.label);
+    };
 
     useEffect(() => {
-        validateValue(value)
-    }, [])
+        validateValue(value);
+    }, []);
 
     return (
         <TextField
@@ -84,4 +84,4 @@ export function FormInput(props: IFormInputProps) {
             error={shouldShowValidationError()}
         />
     );
-};
+}

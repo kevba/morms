@@ -15,7 +15,7 @@ type ITextInputProps = IFormInputProps;
  * @param {ITextInputProps} props
  * @returns {React.ReactElement}
  */
-export const PasswordInput = (props: ITextInputProps) => {
+export const PasswordInput = (props: ITextInputProps): React.ReactElement => {
     const [show, setShow] = useState(false);
 
     return (

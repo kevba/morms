@@ -12,8 +12,8 @@ type IIPInputProps = IFormInputProps;
  * @param {IIPInputProps} props
  * @returns {React.ReactElement}
  */
-export function IPInput(props: IIPInputProps) {
+export function IPInput(props: IIPInputProps): React.ReactElement {
     const {validators, ...otherProps} = props;
     const allValidators = [ipAddress(), ...(validators || [])];
     return <FormInput {...otherProps} validators={allValidators} />;
-};
+}
