@@ -1,4 +1,4 @@
-import { required, integer, greaterThan, lesserThan } from "./validators";
+import { required, integer, float, greaterThan, lesserThan } from "./validators";
 
 import { expect } from 'chai';
 import 'mocha';
@@ -73,6 +73,78 @@ describe('Integer validator', () => {
         const desc =  t.expectedValid ? "Should be valid" :  "Should be invalid"
         it(`${desc} when the value is ${t.value}`, () => {
             const result = integer()(t.value)
+            expect(result.valid).to.equal(t.expectedValid)
+        })
+    }
+}) 
+
+describe('Float validator', () => {
+    const tests = [{
+        value: .10,
+        expectedValid: true, 
+    },{
+        value: 0,
+        expectedValid: true, 
+    },{
+        value: 10,
+        expectedValid: true, 
+    },{
+        value: 10.,
+        expectedValid: true, 
+    },{
+        value: 10.1,
+        expectedValid: true, 
+    },{
+        value: 10.11,
+        expectedValid: true, 
+    },{
+        value: -10.11,
+        expectedValid: true, 
+    },{
+        value: "0",
+        expectedValid: true, 
+    },{
+        value: "10",
+        expectedValid: true, 
+    },{
+        value: "10.",
+        expectedValid: true, 
+    },{
+        value: "10.1",
+        expectedValid: true, 
+    },{
+        value: "10.11",
+        expectedValid: true, 
+    },{
+        value: "-10.11",
+        expectedValid: true, 
+    },{
+        value: "10,11",
+        expectedValid: true,
+    },{
+        value: "10a11",
+        expectedValid: false, 
+    },{
+        value: "10..11",
+        expectedValid: false, 
+    },{
+        value: ".10",
+        expectedValid: false, 
+    },{
+        value: "aaa",
+        expectedValid: false, 
+    },{
+        value: "10.1.",
+        expectedValid: false, 
+    },{
+        value: "10.a",
+        expectedValid: false, 
+    }]
+
+    for (const t of tests) {
+        const desc =  t.expectedValid ? "Should be valid" :  "Should be invalid"
+        it(`${desc} when the value is ${t.value}`, () => {
+            const result = float()(t.value)
             expect(result.valid).to.equal(t.expectedValid)
         })
     }
