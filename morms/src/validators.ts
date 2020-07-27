@@ -24,6 +24,13 @@ export const validate = (input: string, validators: validator[]): IValidationRes
     return validResult();
 };
 
+/**
+ *  required returns a validator that will return a valid result when the value is
+ *  not empty. An empty value is `null`, `undefined or `""` (an empty string).
+ * 
+ * @param {errorText} errorText Optional string containing the message that will be returned when the value is not valid. If this is not provided a default will be used.
+ * @returns {validator}
+ */
 export const required = (errorText?: string): validator => {
     let text = "This field is required";
     if (errorText !== undefined) {
@@ -38,6 +45,16 @@ export const required = (errorText?: string): validator => {
     };
 };
 
+/**
+ * integer returns a validator that will return a valid result when the value is an integer.
+ * 
+ *  The provided value may be Number or a string. If an empty value is provided,
+ *  the validator will also return a valid result. If the value must not be empty, the
+ * `required` validator can be used before this one.
+ * 
+ * @param {errorText} errorText Optional string containing the message that will be returned when the value is not valid. If this is not provided a default will be used.
+ * @returns {validator}
+ */
 export const integer = (errorText?: string): validator => {
     let text = "Must be a whole number";
     if (errorText !== undefined) {
@@ -100,7 +117,7 @@ export const base = (base: number, errorText?: string): validator => {
     };
 };
 
-export const maxValue = (maxVal: number, errorText?: string): validator => {
+export const greaterThan = (maxVal: number, errorText?: string): validator => {
     let text = `Must be smaller than ${maxVal}`;
     if (errorText !== undefined) {
         text = errorText;
@@ -119,7 +136,7 @@ export const maxValue = (maxVal: number, errorText?: string): validator => {
     };
 };
 
-export const minValue = (minVal: number, errorText?: string): validator => {
+export const lesserThan = (minVal: number, errorText?: string): validator => {
     let text = `Must be larger than ${minVal}`;
     if (errorText !== undefined) {
         text = errorText;

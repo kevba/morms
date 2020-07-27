@@ -33,12 +33,18 @@ export function FormInput(props: IFormInputProps): React.ReactElement {
     const onBlur = useContext(ValidateOnBlurDispatch);
 
     const validateValue = (value: string) => {
-        const result = validate(value, validators || []);
+        const {valid, text} = validate(value, validators || []);
 
-        setHelperText(result.text);
-
+        // A new validation error, which means that the previous error has been fixed. 
+        if (!valid && text !== helperText) {
+            if (onValidate !== undefined) {
+                onValidate(props.label, true);
+            }
+        }
+    
+        setHelperText(text);
         if (onValidate !== undefined) {
-            onValidate(props.label, result.valid);
+            onValidate(props.label, valid);
         }
     };
 
