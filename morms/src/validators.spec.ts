@@ -1,4 +1,4 @@
-import { required, integer, float, greaterThan, lesserThan } from "./validators";
+import { required, integer, float, greaterThan, lesserThan, base, maxLength, minLength } from "./validators";
 
 import { expect } from 'chai';
 import 'mocha';
@@ -150,7 +150,6 @@ describe('Float validator', () => {
     }
 }) 
 
-
 describe('Greater than validator', () => {
     const tests = [{
         max: 5,
@@ -187,6 +186,10 @@ describe('Greater than validator', () => {
 describe('Lesser than validator', () => {
     const tests = [{
         min: 5,
+        value: "",
+        expectedValid: true, 
+    },{
+        min: 5,
         value: 7,
         expectedValid: true, 
     },{
@@ -196,6 +199,10 @@ describe('Lesser than validator', () => {
     },{
         min: 5,
         value: 5,
+        expectedValid: true,
+    },{
+        min: 5,
+        value: "5",
         expectedValid: true,
     },{
         min: 5,
@@ -215,3 +222,93 @@ describe('Lesser than validator', () => {
         })
     }  
 })
+
+describe('Max length validator', () => {
+    const tests = [{
+        max: 2,
+        value: "",
+        expectedValid: true, 
+    },{
+        max: 2,
+        value: "aa",
+        expectedValid: true, 
+    },{
+        max: 2,
+        value: "aaa",
+        expectedValid: false, 
+    }]
+
+    for (const t of tests) {
+        const desc =  t.expectedValid ? "Should be valid" :  "Should be invalid"
+
+        it(`${desc} if ${t.value} is longer then ${t.max}`, () => {
+            const result = maxLength(t.max)(t.value)
+            expect(result.valid).to.equal(t.expectedValid)
+        })
+    }  
+})
+
+describe('Min length validator', () => {
+    const tests = [{
+        min: 2,
+        value: "",
+        expectedValid: true, 
+    },{
+        min: 2,
+        value: "aa",
+        expectedValid: true, 
+    },{
+        min: 2,
+        value: "aaa",
+        expectedValid: true, 
+    },{
+        min: 2,
+        value: "a",
+        expectedValid: false, 
+    }]
+
+    for (const t of tests) {
+        const desc =  t.expectedValid ? "Should be valid" :  "Should be invalid"
+
+        it(`${desc} if ${t.value} is shorter then ${t.min}`, () => {
+            const result = minLength(t.min)(t.value)
+            expect(result.valid).to.equal(t.expectedValid)
+        })
+    }  
+})
+
+describe('Base validator', () => {
+    const tests = [{
+        value: "0000",
+        expectedValid: true, 
+        base: 2
+    },{
+        value: "1101",
+        expectedValid: true, 
+        base: 2
+    },{
+        value: "1102",
+        expectedValid: false, 
+        base: 2
+    },{
+        value: "1600",
+        expectedValid: true, 
+        base: 16
+    },{
+        value: "ffff",
+        expectedValid: true, 
+        base: 16
+    },{
+        value: "g111",
+        expectedValid: false, 
+        base: 16
+    }]
+
+    for (const t of tests) {
+        const desc =  t.expectedValid ? "Should be valid" :  "Should be invalid"
+        it(`${desc} when the value is ${t.value}`, () => {
+            const result = base(t.base)(t.value)
+            expect(result.valid).to.equal(t.expectedValid)
+        })
+    }
+}) 

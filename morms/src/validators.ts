@@ -114,6 +114,104 @@ export const float = (maxDecimals?: number, errorText?: string): validator => {
 };
 
 /**
+ * greaterThan returns a validator that will return a valid result when the value is a greater than a provided number.
+ * 
+ *  The provided value may be number or a string. For example `123.12`, `123` `"123.12"` and `"123"` are all accepted. 
+ * 
+ *  If an empty value is provided, the validator will also return a valid result.
+ *  The required` validator can be used before this one if the value should not be empty.
+ * 
+ * @param {number} maxVal The number the value must be greater than. 
+ * @param {string} errorText Optional string containing the message that will be returned when the value is not valid. If this is not provided a default will be used.
+ * @returns {validator}
+ */
+export const greaterThan = (maxVal: number, errorText?: string): validator => {
+    let text = `Must be smaller than ${maxVal}`;
+    if (errorText !== undefined) {
+        text = errorText;
+    }
+
+    return (value: validatableValue) => {
+        if (emptyValue(value)) {
+            return validResult();
+        }
+
+        value = value.toString();
+        if (parseInt(value, 10) > maxVal) {
+            return invalidResult(text);
+        }
+        return validResult();
+    };
+};
+
+/**
+ * lesserThan returns a validator that will return a valid result when the value is a lesser than a provided number.
+ * 
+ *  The provided value may be number or a string. For example `123.12`, `123` `"123.12"` and `"123"` are all accepted. 
+ * 
+ *  If an empty value is provided, the validator will also return a valid result.
+ *  The required` validator can be used before this one if the value should not be empty.
+ * 
+ * @param {number} minVal The number the value must be lesser than. 
+ * @param {string} errorText Optional string containing the message that will be returned when the value is not valid. If this is not provided a default will be used.
+ * @returns {validator}
+ */
+export const lesserThan = (minVal: number, errorText?: string): validator => {
+    let text = `Must be larger than ${minVal}`;
+    if (errorText !== undefined) {
+        text = errorText;
+    }
+
+    return (value: validatableValue) => {
+        if (emptyValue(value)) {
+            return validResult();
+        }
+
+        value = value.toString();
+        if (parseInt(value, 10) < minVal) {
+            return invalidResult(text);
+        }
+        return validResult();
+    };
+};
+
+export const minLength = (min: number, errorText?: string): validator => {
+    let text = `Must at least be ${min} characters long`;
+    if (errorText !== undefined) {
+        text = errorText;
+    }
+
+    return (value: validatableValue) => {
+        if (emptyValue(value)) {
+            return validResult();
+        }
+        if (value.toString().length < min) {
+            return invalidResult(text);
+        }
+
+        return validResult();
+    };
+};
+
+export const maxLength = (max: number, errorText?: string): validator => {
+    let text = `Must at most be ${max} characters long`;
+    if (errorText !== undefined) {
+        text = errorText;
+    }
+
+    return (value: validatableValue) => {
+        if (emptyValue(value)) {
+            return validResult();
+        }
+        if (value.toString().length > max) {
+            return invalidResult(text);
+        }
+
+        return validResult();
+    };
+};
+
+/**
  * base returns a validator that will return a valid result when the value is a certain base, such as base16 (hexadecimal) or base2 (binary).
  * 
  *  The provided value may be number or a string. For example if the value is `FF` and the base is 16 the result will be valid.
@@ -147,44 +245,6 @@ export const base = (base: number, errorText?: string): validator => {
             return validResult();
         }
         return invalidResult(text);
-    };
-};
-
-export const greaterThan = (maxVal: number, errorText?: string): validator => {
-    let text = `Must be smaller than ${maxVal}`;
-    if (errorText !== undefined) {
-        text = errorText;
-    }
-
-    return (value: validatableValue) => {
-        if (emptyValue(value)) {
-            return validResult();
-        }
-
-        value = value.toString();
-        if (parseInt(value, 10) > maxVal) {
-            return invalidResult(text);
-        }
-        return validResult();
-    };
-};
-
-export const lesserThan = (minVal: number, errorText?: string): validator => {
-    let text = `Must be larger than ${minVal}`;
-    if (errorText !== undefined) {
-        text = errorText;
-    }
-
-    return (value: validatableValue) => {
-        if (emptyValue(value)) {
-            return validResult();
-        }
-
-        value = value.toString();
-        if (parseInt(value, 10) < minVal) {
-            return invalidResult(text);
-        }
-        return validResult();
     };
 };
 
@@ -224,42 +284,6 @@ export const ipAddress = (errorText?: string): validator => {
         if (!pattern.test(value)) {
             return invalidResult(text);
         }
-        return validResult();
-    };
-};
-
-export const minLength = (min: number, errorText?: string): validator => {
-    let text = `Must at least be ${min} characters long`;
-    if (errorText !== undefined) {
-        text = errorText;
-    }
-
-    return (value: validatableValue) => {
-        if (emptyValue(value)) {
-            return validResult();
-        }
-        if (value.toString().length < min) {
-            return invalidResult(text);
-        }
-
-        return validResult();
-    };
-};
-
-export const maxLength = (max: number, errorText?: string): validator => {
-    let text = `Must at most be ${max} characters long`;
-    if (errorText !== undefined) {
-        text = errorText;
-    }
-
-    return (value: validatableValue) => {
-        if (emptyValue(value)) {
-            return validResult();
-        }
-        if (value.toString().length > max) {
-            return invalidResult(text);
-        }
-
         return validResult();
     };
 };
