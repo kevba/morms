@@ -175,6 +175,18 @@ export const lesserThan = (minVal: number, errorText?: string): validator => {
     };
 };
 
+/**
+ * minLength returns a validator that will return a valid result when the value is at least a certain number of chracters long.
+ * 
+ *  The provided value should be a string. For example `"aaa"`, `asd2123` are all accepted. 
+ * 
+ *  If an empty value is provided, the validator will also return a valid result.
+ *  The required` validator can be used before this one if the value should not be empty.
+ * 
+ * @param {number} min The minimum number of characters the value must be long. 
+ * @param {string} errorText Optional string containing the message that will be returned when the value is not valid. If this is not provided a default will be used.
+ * @returns {validator}
+ */
 export const minLength = (min: number, errorText?: string): validator => {
     let text = `Must at least be ${min} characters long`;
     if (errorText !== undefined) {
@@ -193,6 +205,18 @@ export const minLength = (min: number, errorText?: string): validator => {
     };
 };
 
+/**
+ * maxLength returns a validator that will return a valid result when the value is at most a certain number of characters long.
+ * 
+ *  The provided value should be a string. For example `"aaa"`, `asd2123` are all accepted. 
+ * 
+ *  If an empty value is provided, the validator will also return a valid result.
+ *  The required` validator can be used before this one if the value should not be empty.
+ * 
+ * @param {number} min The maximum number of characters the value must be long. 
+ * @param {string} errorText Optional string containing the message that will be returned when the value is not valid. If this is not provided a default will be used.
+ * @returns {validator}
+ */
 export const maxLength = (max: number, errorText?: string): validator => {
     let text = `Must at most be ${max} characters long`;
     if (errorText !== undefined) {
