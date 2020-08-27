@@ -24,6 +24,25 @@ export const validate = (input: string, validators: validator[]): IValidationRes
     return validResult();
 };
 
+
+// validateAll validates input over a set of given validators. It returns the return value of all
+// the validators that fail.
+export const validateAll = (input: string, validators: validator[]): IValidationResult[] => {
+    const results: IValidationResult[] = []
+
+    for (let i = 0; i < validators.length; i++) {
+        const validator = validators[i];
+        const result = validator(input);
+
+        // Stop as soon when the first validator failes
+        if (!result.valid) {
+            results.push(result)
+        }
+    }
+
+    return results;
+};
+
 /**
  *  required returns a validator that will return a valid result when the value is
  *  not empty. An empty value is `null`, `undefined or `""` (an empty string).

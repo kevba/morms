@@ -1,6 +1,6 @@
 {
   "name": "morms",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "description": "react components to quicklty build forms with validation",
   "scripts": {
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
@@ -10,7 +10,7 @@
     "watch": "npm run build && tsc -w",
     "prerelease": "npm run test && npm run lint && npm run build",
     "release": "npm run prerelease && cd dist && npm publish",
-    "link": "cd dist && npm link"
+    "link": "cd dist && npm link --only=production"
   },
   "repository": {
     "type": "git",
@@ -25,8 +25,8 @@
   "peerDependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   },
   "devDependencies": {
     "@material-ui/core": "^4.11.0",
@@ -44,5 +44,6 @@
     "react-dom": "^16.13.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
-  }
+  },
+  "dependencies": {}
 }

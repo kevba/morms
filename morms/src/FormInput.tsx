@@ -9,6 +9,7 @@ import {ValidationDispatch, ValidateOnBlurDispatch} from "./Form";
 export interface IFormInputProps extends StandardTextFieldProps {
     label: string;
     value: string;
+    showAllValidationErrors?: boolean;
     validators?: validator[];
 }
 
@@ -25,51 +26,48 @@ export interface IFormInputProps extends StandardTextFieldProps {
  * @param {IFormInputProps} props
  * @returns {React.ReactElement}
  */
-export function FormInput(props: IFormInputProps): React.ReactElement {
-    const {validators, value, label, ...inputProps} = props;
+export function FormInput({label, value, validators, ...inputProps}: IFormInputProps): React.ReactElement {
     const [helperText, setHelperText] = useState<string>("");
 
     const {validations, onValidate} = useContext(ValidationDispatch);
     const onBlur = useContext(ValidateOnBlurDispatch);
 
     const validateValue = (value: string) => {
-        const {valid, text} = validate(value, validators || []);
-
-        // A new validation error, which means that the previous error has been fixed. 
-        if (!valid && text !== helperText) {
-            if (onValidate !== undefined) {
-                onValidate(props.label, true);
-            }
-        }
+        const result = validate(value, validators || []);
+        let text = ""
+        let isValid = true
     
+        isValid = result.valid
+        text = result.text
+                
         setHelperText(text);
         if (onValidate !== undefined) {
-            onValidate(props.label, valid);
+            onValidate(label, isValid);
         }
     };
 
     const shouldShowValidationError = () => {
-        if (validations[props.label] === undefined) {
+        if (validations[label] === undefined) {
             return false;
         }
 
-        return validations[props.label].showError && helperText !== "";
+        return validations[label].showError && helperText !== "";
     };
 
     const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (props.onChange !== undefined) {
-            props.onChange(event);
+        if (inputProps.onChange !== undefined) {
+            inputProps.onChange(event);
         }
 
         validateValue(event.target.value);
     };
 
     const handleOnBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-        if (props.onBlur !== undefined) {
-            props.onBlur(event);
+        if (inputProps.onBlur !== undefined) {
+            inputProps.onBlur(event);
         }
 
-        onBlur(props.label);
+        onBlur(label);
     };
 
     useEffect(() => {
