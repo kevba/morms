@@ -13,7 +13,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-type ISubmitButton = ButtonProps;
+interface ISubmitButton extends ButtonProps {
+    noErrorText?: boolean;
+    children?: React.ReactNode;
+}
 
 /**
  * IPInput wraps FormInput and validates IP addresses. Additional validators can be passed by using the `validators` prop.
@@ -22,7 +25,7 @@ type ISubmitButton = ButtonProps;
  * @returns {React.ReactElement}
  */
 export function SubmitButton(props: ISubmitButton): React.ReactElement {
-    const {children} = props;
+    const {children, noErrorText} = props;
 
     const classes = useStyles();
 
@@ -41,6 +44,10 @@ export function SubmitButton(props: ISubmitButton): React.ReactElement {
     };
 
     const renderErrorText = (): React.ReactElement => {
+        if (noErrorText !== undefined && noErrorText) {
+            return <React.Fragment />;
+
+        }
         if (!showError) {
             return <React.Fragment />;
         }
@@ -49,10 +56,10 @@ export function SubmitButton(props: ISubmitButton): React.ReactElement {
 
     return (
         <React.Fragment>
+            {renderErrorText()}
             <Button {...props} onClick={handleOnClick}>
                 {children}
             </Button>
-            {renderErrorText()}
         </React.Fragment>
     );
 }
